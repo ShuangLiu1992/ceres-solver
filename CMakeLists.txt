@@ -214,12 +214,6 @@ set(LIB_SUFFIX "${LIB_SUFFIX}" CACHE STRING
 if (IOS)
   message(STATUS "Building Ceres for iOS platform: ${IOS_PLATFORM}")
 
-  # Ceres requires at least iOS 7.0+.
-  if (IOS_DEPLOYMENT_TARGET VERSION_LESS 7.0)
-    message(FATAL_ERROR "Unsupported iOS version: ${IOS_DEPLOYMENT_TARGET}, Ceres "
-      "requires at least iOS version 7.0")
-  endif()
-
   update_cache_variable(MINIGLOG ON)
   message(STATUS "Building for iOS: Forcing use of miniglog instead of glog.")
 
@@ -605,13 +599,7 @@ if (UNIX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CERES_STRICT_CXX_FLAGS}")
 endif (UNIX)
 
-# Use a larger inlining threshold for Clang, since it hobbles Eigen,
-# resulting in an unreasonably slow version of the blas routines. The
-# -Qunused-arguments is needed because CMake passes the inline
-# threshold to the linker and clang complains about it and dies.
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang") # Matches Clang & AppleClang.
-  set(CMAKE_CXX_FLAGS
-    "${CMAKE_CXX_FLAGS} -Qunused-arguments -mllvm -inline-threshold=600")
 
   # Older versions of Clang (<= 2.9) do not support the 'return-type-c-linkage'
   # option, so check for its presence before adding it to the default flags set.
