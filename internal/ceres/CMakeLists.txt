@@ -109,7 +109,7 @@ if (NOT MINIGLOG AND GLOG_FOUND)
     # when gflags is an imported target (as it is in newer versions).
     # As glog #includes gflags/gflags.h in glog/logging.h if compiled with
     # gflags, it is thus a public dependency for Ceres in this case.
-    list(APPEND CERES_LIBRARY_PUBLIC_DEPENDENCIES gflags)
+    #list(APPEND CERES_LIBRARY_PUBLIC_DEPENDENCIES gflags::gflags)
   endif()
 endif (NOT MINIGLOG AND GLOG_FOUND)
 
