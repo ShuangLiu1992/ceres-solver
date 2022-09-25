@@ -58,6 +58,8 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 endif()
 
 project(Ceres C CXX)
+include(conanbuildinfo.cmake)
+conan_basic_setup()
 
 # NOTE: The following CMake variables must be applied consistently to all
 # targets in project to avoid visibility warnings by placing the variables at
@@ -204,7 +206,7 @@ unset(CERES_COMPILE_OPTIONS)
 
 # Eigen.
 # Eigen delivers Eigen3Config.cmake since v3.3.3
-find_package(Eigen3 3.3 REQUIRED)
+find_package(Eigen3 REQUIRED)
 if (Eigen3_FOUND)
   message("-- Found Eigen version ${Eigen3_VERSION}: ${Eigen3_DIR}")
   if (CMAKE_SYSTEM_PROCESSOR MATCHES "^(aarch64.*|AARCH64.*)" AND
@@ -496,6 +498,7 @@ if (MSVC)
   #
   # [1] https://msdn.microsoft.com/en-us/library/4hwaceh6.aspx
   add_definitions("-D_USE_MATH_DEFINES")
+  add_definitions("-DNOMINMAX")
   # Disable signed/unsigned int conversion warnings.
   add_compile_options("/wd4018" "/wd4267")
   # Disable warning about using struct/class for the same symobl.
