@@ -172,11 +172,6 @@ enable_sanitizer(${SANITIZERS})
 if (ANDROID)
   option(ANDROID_STRIP_DEBUG_SYMBOLS "Strip debug symbols from Android builds (reduces file sizes)" ON)
 endif()
-if (MSVC)
-  # TODO Not needed starting CMake 3.15 which provides CMAKE_MSVC_RUNTIME_LIBRARY
-  option(MSVC_USE_STATIC_CRT
-    "MS Visual Studio: Use static C-Run Time Library in place of shared." OFF)
-endif()
 
 # IOS is defined iff using the iOS.cmake CMake toolchain to build a static
 # library for iOS.
@@ -530,28 +525,12 @@ if (MSVC)
   # the warnings.
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ignore:4049")
 
-  # Update the C/CXX flags for MSVC to use either the static or shared
-  # C-Run Time (CRT) library based on the user option: MSVC_USE_STATIC_CRT.
   list(APPEND C_CXX_FLAGS
     CMAKE_CXX_FLAGS
     CMAKE_CXX_FLAGS_DEBUG
     CMAKE_CXX_FLAGS_RELEASE
     CMAKE_CXX_FLAGS_MINSIZEREL
     CMAKE_CXX_FLAGS_RELWITHDEBINFO)
-
-  foreach(FLAG_VAR ${C_CXX_FLAGS})
-    if (MSVC_USE_STATIC_CRT)
-      # Use static CRT.
-      if (${FLAG_VAR} MATCHES "/MD")
-        string(REGEX REPLACE "/MD" "/MT" ${FLAG_VAR} "${${FLAG_VAR}}")
-      endif (${FLAG_VAR} MATCHES "/MD")
-    else (MSVC_USE_STATIC_CRT)
-      # Use shared, not static, CRT.
-      if (${FLAG_VAR} MATCHES "/MT")
-        string(REGEX REPLACE "/MT" "/MD" ${FLAG_VAR} "${${FLAG_VAR}}")
-      endif (${FLAG_VAR} MATCHES "/MT")
-    endif (MSVC_USE_STATIC_CRT)
-  endforeach()
 
   # Tuple sizes of 10 are used by Gtest.
   add_definitions("-D_VARIADIC_MAX=10")
