@@ -370,10 +370,7 @@ if (MINIGLOG)
     $<BUILD_INTERFACE:${Ceres_SOURCE_DIR}/internal/ceres/miniglog>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/ceres/internal/miniglog>)
 elseif (NOT FOUND_INSTALLED_GLOG_CMAKE_CONFIGURATION)
-  # Only append glog include directories if the glog found was not a CMake
-  # exported target that already includes them.
-  list(APPEND CERES_LIBRARY_PUBLIC_DEPENDENCIES_INCLUDE_DIRS
-    ${GLOG_INCLUDE_DIRS})
+  target_link_libraries(ceres PUBLIC glog::glog)
 endif()
 if (ACCELERATESPARSE)
   list(APPEND CERES_LIBRARY_PRIVATE_DEPENDENCIES_INCLUDE_DIRS
