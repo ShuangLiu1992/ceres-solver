@@ -218,6 +218,8 @@ add_library(ceres_internal OBJECT
     linear_operator.cc
     linear_solver.cc
     low_rank_inverse_hessian.cc
+    marginalization.cc
+    marginalizable_manifold.cc
     minimizer.cc
     parallel_for_cxx.cc
     parallel_utils.cc
@@ -229,6 +231,7 @@ add_library(ceres_internal OBJECT
     preprocessor.cc
     problem_impl.cc
     program.cc
+    rebase.cc
     reorder_program.cc
     residual_block.cc
     residual_block_utils.cc
@@ -511,6 +514,10 @@ if (BUILD_TESTING AND GFLAGS)
   ceres_test(line_search_preprocessor)
   ceres_test(loss_function)
   ceres_test(manifold)
+  ceres_test(marginalizable_manifold)
+  ceres_test(marginalization)
+  ceres_test(marginalization_prior_cost_function)
+  ceres_test(rebase)
   ceres_test(minimizer)
   ceres_test(normal_prior)
   ceres_test(numeric_diff_cost_function)
